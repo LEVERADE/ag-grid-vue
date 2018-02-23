@@ -153,8 +153,14 @@ export class VueComponentFactory {
                 params: params
             }
         };
-
-        let component = new componentType(details);
+        let component;
+        if (Array.isArray(componentType)) {
+            let [extend, properties] = componentType;
+            Object.assign(properties, details);
+            component = new extend(properties);
+        } else {
+            component = new componentType(details);
+        }
         component.$mount();
         return component;
     }
